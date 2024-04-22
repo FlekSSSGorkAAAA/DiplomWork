@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InclusiveEducationApp.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,24 @@ namespace InclusiveEducationApp.Pages
         public UploadFilePage()
         {
             InitializeComponent();
+        }
+
+        private void upload_xlxs_file_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Microsoft.Win32.OpenFileDialog();
+            dialog.DefaultExt = ".xml";
+            dialog.Filter = "(.xlxs)|*.xlxs";
+
+            bool? result = dialog.ShowDialog();
+                        
+            if (result == true)
+            {
+                // Open document
+                string filename = dialog.FileName;
+                MessageBox.Show(filename);
+            }
+
+            Globals.frame.Navigate(new ActionWithFilePage());
         }
     }
 }

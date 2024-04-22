@@ -1,6 +1,4 @@
-﻿using InclusiveEducationApp.Classes;
-using InclusiveEducationApp.Pages;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,20 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace InclusiveEducationApp
+namespace InclusiveEducationApp.Pages
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Логика взаимодействия для LoadInfoToExcelPage.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class LoadInfoToExcelPage : Page
     {
-        public MainWindow()
+        public LoadInfoToExcelPage()
         {
             InitializeComponent();
-
-            Globals.frame = mainFrame;
-
-            Globals.frame.Navigate(new UploadFilePage());
         }
     }
 }
