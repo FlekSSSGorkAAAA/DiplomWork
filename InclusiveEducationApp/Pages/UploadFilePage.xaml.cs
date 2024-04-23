@@ -27,6 +27,8 @@ namespace InclusiveEducationApp.Pages
                 {
                     Globals.filePath = op.FileName;
 
+                    ExcelHelperClass helper = new ExcelHelperClass(op.FileName);
+
                     Globals.frame.Navigate(new ActionWithFilePage());
                 }
                 else
