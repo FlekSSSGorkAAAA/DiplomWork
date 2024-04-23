@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Office.Interop.Excel;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace InclusiveEducationApp.Classes
 {
@@ -10,7 +7,8 @@ namespace InclusiveEducationApp.Classes
     {
         public ExcelHelperClass(string pathFile)
         {
-
+            Excel.Application app = new Excel.Application();
+            Workbook wb = app.Workbooks.Open(pathFile);
         }
     }
 }
