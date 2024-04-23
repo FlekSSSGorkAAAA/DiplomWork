@@ -1,9 +1,10 @@
 ﻿using Microsoft.Win32;
 using System.IO;
 using System.Windows;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Spreadsheet;
 using System.Linq;
+using DocumentFormat.OpenXml.Spreadsheet;
+using NPOI.XSSF.UserModel;
+using NPOI.SS.UserModel;
 
 namespace InclusiveEducationApp.Classes
 {
@@ -11,55 +12,102 @@ namespace InclusiveEducationApp.Classes
     {
         public ExcelHelperClass(string pathFile)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.ShowDialog();
+            //OpenFileDialog ofd = new OpenFileDialog();
+            //ofd.ShowDialog();
 
-            using (FileStream fs = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (FileStream fs = new FileStream(pathFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
-                using (SpreadsheetDocument doc = SpreadsheetDocument.Open(fs, false))
+                IWorkbook workbook;
+                workbook = new XSSFWorkbook(pathFile);
+                fs.Close();
+
+                int sheetsCounter = workbook.NumberOfSheets;
+
+                if (sheetsCounter > 1)
                 {
-                    WorkbookPart workbookPart = doc.WorkbookPart;
-                    SharedStringTablePart sstpart = workbookPart.GetPartsOfType<SharedStringTablePart>().First();
-                    SharedStringTable sst = sstpart.SharedStringTable;
-                    WorksheetPart worksheetPart = workbookPart.WorksheetParts.First();
-                    Worksheet sheet = worksheetPart.Worksheet;
-                    var cells = sheet.Descendants<Cell>();
-                    var rows = sheet.Descendants<Row>();
-                    int a = 10;
-                    //MessageBox.Show("Row count = {0}" + rows.LongCount().ToString());
-                    //MessageBox.Show("Cell count = {0}" + cells.LongCount().ToString());
-                    // One way: go through each cell in the sheet
-                    //foreach (Cell cell in cells)
-                    //{
-                    //    if ((cell.DataType != null) && (cell.DataType == CellValues.SharedString))
-                    //    {
-                    //        int ssid = int.Parse(cell.CellValue.Text);
-                    //        string str = sst.ChildElements[ssid].InnerText;
-                    //        MessageBox.Show("Shared string {0}: {1}" + ssid.ToString() + str.ToString());
-                    //    }
-                    //    else if (cell.CellValue != null)
-                    //    {
-                    //        MessageBox.Show("Cell contents: {0}" + cell.CellValue.Text);
-                    //    }
-                    //}
-                    // Or... via each row
-                    foreach (Row row in rows)
+                    for (int j = 0; j < sheetsCounter; j++) // цикл по каждому листу
                     {
-                        foreach (Cell c in row.Elements<Cell>())
+                        ISheet sheet = workbook.GetSheetAt(j);
+
+                        var firstRow = sheet.GetRow(0);
+                        var secondRow = sheet.GetRow(1);
+                        var thirdRow = sheet.GetRow(2);
+
+
+                        for (int i = 3; i < sheet.LastRowNum; i++)
                         {
-                            if ((c.DataType != null) && (c.DataType == CellValues.SharedString))
-                            {
-                                int ssid = int.Parse(c.CellValue.Text);
-                                string str = sst.ChildElements[ssid].InnerText;
-                                MessageBox.Show("Shared string {0}: {1}" + ssid + str);
-                            }
-                            else if (c.CellValue != null)
-                            {
-                                MessageBox.Show("Cell contents: {0}", c.CellValue.Text);
-                            }
+                            var row = sheet.GetRow(i);
+
+                            var valueOVZ = firstRow.GetCell(59).StringCellValue;
+                            var category = secondRow.GetCell(61).StringCellValue;
+                            var valueOfPerson = thirdRow.GetCell(59).StringCellValue;
+
+
+                            //ICell cellNumb = row.GetCell(59);
+
+
+
+                            int a = 10;
+
+
                         }
+
+
+
+
                     }
                 }
+
+                //using (SpreadsheetDocument doc = SpreadsheetDocument.Open(fs, false))
+                //{
+                //    WorkbookPart workbookPart = doc.WorkbookPart;
+                //    SharedStringTablePart sstpart = workbookPart.GetPartsOfType<SharedStringTablePart>().First();
+                //    SharedStringTable sst = sstpart.SharedStringTable;
+                //    WorksheetPart worksheetPart = workbookPart.WorksheetParts.First();
+                //    Worksheet sheet = worksheetPart.Worksheet;
+
+
+                //    var cells = sheet.Descendants<Cell>();
+                //    var rows = sheet.Descendants<Row>();
+
+                //    var a = rows.LongCount();
+
+                //    //MessageBox.Show("Row count = {0}" + rows.LongCount().ToString());
+                //    //MessageBox.Show("Cell count = {0}" + cells.LongCount().ToString());
+                //    // One way: go through each cell in the sheet
+                //    //foreach (Cell cell in cells)
+                //    //{
+                //    //    if ((cell.DataType != null) && (cell.DataType == CellValues.SharedString))
+                //    //    {
+                //    //        int ssid = int.Parse(cell.CellValue.Text);
+                //    //        string str = sst.ChildElements[ssid].InnerText;
+                //    //        MessageBox.Show("Shared string {0}: {1}" + ssid.ToString() + str.ToString());
+                //    //    }
+                //    //    else if (cell.CellValue != null)
+                //    //    {
+                //    //        MessageBox.Show("Cell contents: {0}" + cell.CellValue.Text);
+                //    //    }
+                //    //}
+                //    // Or... via each row
+
+                //    foreach (Row row in rows)
+                //    {
+                //        foreach (Cell c in row.Elements<Cell>())
+                //        {
+                //            if ((c.DataType != null) && (c.DataType == CellValues.SharedString))
+                //            {
+                //                int ssid = int.Parse(c.CellValue.Text);
+                //                string str = sst.ChildElements[ssid].InnerText;
+                //                MessageBox.Show("Shared string {0}: {1}" + ssid + str);
+                //            }
+                //            else if (c.CellValue != null)
+                //            {
+                //                MessageBox.Show("Cell contents: {0}", c.CellValue.Text);
+                //            }
+                //        }
+                //    }
+                //}
+
             }
         }
     }
