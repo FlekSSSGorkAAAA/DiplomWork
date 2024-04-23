@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 
 namespace InclusiveEducationApp.Classes
 {
-    public static class Globals
+    internal class ExcelHelperClass
     {
-        public static Frame frame;
+        public ExcelHelperClass(string pathFile)
+        {
 
-        public static string filePath;
+        }
     }
 }
