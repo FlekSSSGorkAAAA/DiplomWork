@@ -5,13 +5,17 @@ using System.Linq;
 using DocumentFormat.OpenXml.Spreadsheet;
 using NPOI.XSSF.UserModel;
 using NPOI.SS.UserModel;
+using System.Collections.Generic;
+using System;
 
 namespace InclusiveEducationApp.Classes
 {
     internal class ExcelHelperClass
     {
+        public List<ModelExcel> filledCells;
         public ExcelHelperClass(string pathFile)
         {
+
             //OpenFileDialog ofd = new OpenFileDialog();
             //ofd.ShowDialog();
 
@@ -25,9 +29,9 @@ namespace InclusiveEducationApp.Classes
 
                 if (sheetsCounter > 1)
                 {
-                    for (int j = 0; j < sheetsCounter; j++) // цикл по каждому листу
+                    for (int listCounter = 0; listCounter < sheetsCounter; listCounter++) // цикл по каждому листу
                     {
-                        ISheet sheet = workbook.GetSheetAt(j);
+                        ISheet sheet = workbook.GetSheetAt(listCounter);
 
                         var firstRow = sheet.GetRow(0);
                         var secondRow = sheet.GetRow(1);
@@ -37,24 +41,36 @@ namespace InclusiveEducationApp.Classes
                         for (int i = 3; i < sheet.LastRowNum; i++)
                         {
                             var row = sheet.GetRow(i);
+                            
+                            for(int j = 0; j < row.LastCellNum; j++)
+                            {
+                                int countValueStudent = Convert.ToInt32(row.GetCell(j).NumericCellValue);
+                                
+                                if (countValueStudent != 0)
+                                {
+                                    var valueOVZ = firstRow.GetCell(j).StringCellValue;
+                                    var category = secondRow.GetCell(j).StringCellValue;
+                                    var valueOfPerson = thirdRow.GetCell(j).StringCellValue;
+                                    var collegeName = row.GetCell(0).StringCellValue;
+                                    var specializationName = row.GetCell(1).StringCellValue;
 
-                            var valueOVZ = firstRow.GetCell(59).StringCellValue;
-                            var category = secondRow.GetCell(61).StringCellValue;
-                            var valueOfPerson = thirdRow.GetCell(59).StringCellValue;
-
+                                    filledCells.Add(new ModelExcel(
+                                    {
+                                        Category = category,
+                                        CollegeName = collegeName,
+                                        Specialization = specializationName,
+                                        StudentCount = countValueStudent,
+                                        StudentStatus = valueOfPerson,
+                                        SubCategory = valueOVZ
+                                    }))
+                                }
+                                
+                            }                         
 
                             //ICell cellNumb = row.GetCell(59);
 
-
-
                             int a = 10;
-
-
                         }
-
-
-
-
                     }
                 }
 
